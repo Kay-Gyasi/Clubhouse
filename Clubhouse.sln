@@ -7,8 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{38F20E43-A55
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{B9A45DEF-28D2-4F7B-97D8-96B5D8B82D5E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{ECA4B081-C8FF-4628-B975-6B586E887B57}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B78FB4DB-8CE3-42E1-B59E-A5154B35A21E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clubhouse.Api", "src\Clubhouse.Api\Clubhouse.Api.csproj", "{6D1CBDB2-17B2-48A7-AF9F-1018B87C1135}"
@@ -18,6 +16,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clubhouse.Data", "src\Clubhouse.Data\Clubhouse.Data.csproj", "{F323401B-AAC7-4259-88AB-907BD810D8A5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clubhouse.UnitTests", "tests\Clubhouse.UnitTests\Clubhouse.UnitTests.csproj", "{DB82C505-F46D-4395-9446-8BFCDB1858D2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A1C05520-2125-4D17-808E-BB85500A6309}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

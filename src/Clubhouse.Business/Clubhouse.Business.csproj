@@ -1,9 +1,24 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Akka" Version="1.5.13" />
+		<PackageReference Include="Akka.DependencyInjection" Version="1.5.13" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.13" />
+	</ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Authentication\" />
+    <Folder Include="Actors\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Clubhouse.Data\Clubhouse.Data.csproj" />
+  </ItemGroup>
 
 </Project>
