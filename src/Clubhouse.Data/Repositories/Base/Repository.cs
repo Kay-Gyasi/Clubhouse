@@ -4,6 +4,7 @@ using Clubhouse.Data.Extensions;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace Clubhouse.Data.Repositories.Base;
 
@@ -13,7 +14,7 @@ public class Repository<TEntity> : IRepository<TEntity>
     private readonly ApplicationDbContext _dbContext;
     private readonly ILogger _logger;
 
-    public Repository(ApplicationDbContext dbContext,
+    protected Repository(ApplicationDbContext dbContext,
         ILogger logger)
     {
         _dbContext = dbContext;
@@ -251,6 +252,32 @@ public class Repository<TEntity> : IRepository<TEntity>
         {
             _logger.LogError(ex, "Error while retrieving info from db");
             return null;
+        }
+    }
+
+    public async Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        try
+        {
+            return await _dbContext.Set<TEntity>().AnyAsync(predicate);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error while retrieving info from db");
+            return false;
+        }
+    }
+
+    public async Task<bool> HasDataAsync()
+    {
+        try
+        {
+            return await _dbContext.Set<TEntity>().AnyAsync();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error while retrieving info from db");
+            return false;
         }
     }
 

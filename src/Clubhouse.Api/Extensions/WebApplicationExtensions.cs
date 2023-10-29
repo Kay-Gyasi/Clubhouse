@@ -10,6 +10,8 @@ using System.Reflection;
 using Akka.Actor;
 using Clubhouse.Business.Extensions;
 using Clubhouse.Business.Models;
+using Clubhouse.Business.Services.Interfaces;
+using Clubhouse.Business.Services.Providers;
 using Clubhouse.Data.Extensions;
 using Microsoft.EntityFrameworkCore;
 
@@ -143,7 +145,8 @@ public static class WebApplicationExtensions
                 logger.LogInformation($"no pending migrations found! :)");
             }
 
-            //SeedDb(storageContext)
+            var initializer = services.GetRequiredService<IInitializationService>();
+            initializer.InitializeDbAsync().GetAwaiter().GetResult();
         }
         catch (Exception ex)
         {

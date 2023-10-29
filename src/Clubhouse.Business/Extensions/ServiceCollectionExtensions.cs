@@ -6,6 +6,10 @@ using Akka.DependencyInjection;
 using Clubhouse.Business.Actors;
 using Clubhouse.Business.Authentication;
 using Clubhouse.Business.Options;
+using Clubhouse.Business.Services.Interfaces;
+using Clubhouse.Business.Services.Providers;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +26,12 @@ public static class ServiceCollectionExtensions
             .AddBearerAuth(config)
             .AddScoped<IJwtService, JwtService>();
 
+        services.AddScoped<IUserService, UserService>()
+            .AddScoped<IInitializationService, InitializationService>();
+
+        services.AddFluentValidationAutoValidation()
+            .AddFluentValidationClientsideAdapters()
+            .AddValidatorsFromAssembly(typeof(ServiceCollectionExtensions).Assembly);
         return services;
     }
 
@@ -29,10 +39,9 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        Action<BearerTokenConfig> bearerTokenConfigAction = bearerTokenConfig =>
-            configuration.GetSection(nameof(BearerTokenConfig)).Bind(bearerTokenConfig);
+        services.Configure<BearerTokenConfig>(configuration.GetSection(nameof(BearerTokenConfig)));
         var bearerConfig = new BearerTokenConfig();
-        bearerTokenConfigAction.Invoke(bearerConfig);
+        configuration.GetSection(nameof(BearerTokenConfig)).Bind(bearerConfig);
 
         services.AddAuthentication(x =>
             {

@@ -6,9 +6,5 @@ namespace Clubhouse.Data.EntityConfigurations
 {
     public class UserConfiguration : EntityConfiguration<User>
     {
-        public override void Configure(EntityTypeBuilder<User> builder)
-        {
-            base.Configure(builder);
-        }
     }
 }

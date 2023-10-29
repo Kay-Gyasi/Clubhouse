@@ -39,6 +39,8 @@ public interface IRepository<TEntity> where TEntity : Entity
         CancellationToken ct = default);
 
     Task<IEnumerable<TEntity>?> GetAllAsync(Expression<Func<TEntity, bool>> predicate);
+    Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate);
+    Task<bool> HasDataAsync();
 
     Task<bool> UpdateAsync(TEntity entity,
         bool saveChanges = true,

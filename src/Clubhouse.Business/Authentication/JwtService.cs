@@ -32,7 +32,7 @@ public class JwtService : IJwtService
             new Claim(ClaimTypes.MobilePhone, user.PhoneNumber ?? ""),
         });
 
-        var roles = user.Roles.Deserialize<List<string>>() ?? new List<string>();
+        var roles = user.Roles.Select(x => x.Name);
         foreach (var role in roles)
         {
             identity.AddClaim(new Claim(ClaimTypes.Role, role));

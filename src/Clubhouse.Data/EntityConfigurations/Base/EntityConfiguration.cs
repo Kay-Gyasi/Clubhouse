@@ -16,7 +16,6 @@ public class EntityConfiguration<T> : IEntityTypeConfiguration<T>
 
         builder.Property(c => c.CreatedAt)
             .IsRequired()
-            .HasColumnType("timestamp")
             .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
         
         builder.Property(c => c.CreatedBy)

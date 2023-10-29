@@ -4,6 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	  <NoWarn>CS8618;</NoWarn>
   </PropertyGroup>
 
 	<ItemGroup>
@@ -22,8 +23,10 @@
   <ItemGroup>
     <Folder Include="Entities\Base\" />
     <Folder Include="Repositories\Base\" />
-    <Folder Include="Repositories\Interfaces\" />
-    <Folder Include="Repositories\Providers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Clubhouse.Shared\Clubhouse.Shared.csproj" />
   </ItemGroup>
 
 </Project>

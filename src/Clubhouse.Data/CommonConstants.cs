@@ -10,6 +10,8 @@ public static class CommonConstants
     public static class UserRoles
     {
         public const string Member = "member";
+        public const string Customer = "customer";
         public const string BackOfficer = "back-officer";
+        public const string Manager = "manager";
     }
 }
