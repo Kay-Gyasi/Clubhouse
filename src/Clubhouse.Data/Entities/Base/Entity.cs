@@ -2,7 +2,8 @@
 
 public class Entity
 {
-    public string Id { get; set; } = Guid.NewGuid().ToString("N");
+    public string Id { get; } = Guid.NewGuid().ToString("N");
+    public int RowId { get; }
     public string CreatedBy { get; set; } = "sysadmin";
     public string? CreatedById { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

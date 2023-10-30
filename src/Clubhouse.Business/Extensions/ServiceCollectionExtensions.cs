@@ -26,7 +26,10 @@ public static class ServiceCollectionExtensions
             .AddBearerAuth(config)
             .AddScoped<IJwtService, JwtService>();
 
-        services.AddScoped<IUserService, UserService>()
+        services
+            .AddScoped<IUserService, UserService>()
+            .AddScoped<IBillService, BillService>()
+            .AddScoped<IItemService, ItemService>()
             .AddScoped<IInitializationService, InitializationService>();
 
         services.AddFluentValidationAutoValidation()

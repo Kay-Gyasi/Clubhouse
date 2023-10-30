@@ -3,4 +3,6 @@
   &lt;Assembly Path="C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\7.0.12\Microsoft.Extensions.Diagnostics.HealthChecks.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\admin\.nuget\packages\microsoft.aspnetcore.mvc.versioning\5.1.0\lib\net6.0\Microsoft.AspNetCore.Mvc.Versioning.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\7.0.12\Microsoft.AspNetCore.Http.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Program Files\dotnet\shared\Microsoft.NETCore.App\7.0.12\System.ComponentModel.Annotations.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Program Files\dotnet\shared\Microsoft.NETCore.App\7.0.12\System.Private.CoreLib.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String></wpf:ResourceDictionary>

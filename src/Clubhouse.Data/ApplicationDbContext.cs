@@ -12,6 +12,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Item> Items => Set<Item>();
     public DbSet<BillEntry> BillEntries => Set<BillEntry>();
     public DbSet<Bill> Bill => Set<Bill>();
+    public DbSet<Payment> Payments => Set<Payment>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

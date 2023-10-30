@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-using FluentValidation;
+﻿using FluentValidation;
+using System.ComponentModel.DataAnnotations;
 
 namespace Clubhouse.Business.Contracts.Requests;
 
-public class CreateMemberRequest
+public class UpdateMemberRequest
 {
+    public string Id { get; set; }   
     public string Username { get; set; }
     public UserType Type { get; set; } = UserType.Customer;
 
@@ -13,13 +14,11 @@ public class CreateMemberRequest
 
     [EmailAddress]
     public string? Email { get; set; }
-
-    public string Password { get; set; }
 }
 
-public class CreateMemberRequestValidator : AbstractValidator<CreateMemberRequest>
+public class UpdateMemberRequestValidator : AbstractValidator<UpdateMemberRequest>
 {
-    public CreateMemberRequestValidator()
+    public UpdateMemberRequestValidator()
     {
         RuleFor(x => x.Username)
             .NotEmpty()
@@ -28,10 +27,6 @@ public class CreateMemberRequestValidator : AbstractValidator<CreateMemberReques
         RuleFor(x => x.PhoneNumber)
             .NotEmpty()
             .WithMessage("phoneNumber is required")
-            .NotNull();
-        RuleFor(x => x.Password)
-            .NotEmpty()
-            .WithMessage("password is required")
             .NotNull();
     }
 }

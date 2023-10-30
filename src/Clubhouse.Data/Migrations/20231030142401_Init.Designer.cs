@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Clubhouse.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231029121449_Init")]
+    [Migration("20231030142401_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -43,9 +43,11 @@ namespace Clubhouse.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("RowId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RowId"));
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -63,7 +65,16 @@ namespace Clubhouse.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("Id"), false);
+
+                    b.HasIndex("RowId")
+                        .IsUnique()
+                        .HasDatabaseName("row_idx");
+
+                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("RowId"));
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Bill");
                 });
@@ -97,6 +108,12 @@ namespace Clubhouse.Data.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<int>("RowId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RowId"));
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -109,9 +126,17 @@ namespace Clubhouse.Data.Migrations
 
                     b.HasKey("Id");
 
+                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("Id"), false);
+
                     b.HasIndex("BillId");
 
                     b.HasIndex("ItemId");
+
+                    b.HasIndex("RowId")
+                        .IsUnique()
+                        .HasDatabaseName("row_idx");
+
+                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("RowId"));
 
                     b.ToTable("BillEntries");
                 });
@@ -141,6 +166,12 @@ namespace Clubhouse.Data.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int>("RowId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RowId"));
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -153,7 +184,70 @@ namespace Clubhouse.Data.Migrations
 
                     b.HasKey("Id");
 
+                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("Id"), false);
+
+                    b.HasIndex("RowId")
+                        .IsUnique()
+                        .HasDatabaseName("row_idx");
+
+                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("RowId"));
+
                     b.ToTable("Items");
+                });
+
+            modelBuilder.Entity("Clubhouse.Data.Entities.Payment", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("BillId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("RowId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RowId"));
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("Id"), false);
+
+                    b.HasIndex("BillId");
+
+                    b.HasIndex("RowId")
+                        .IsUnique()
+                        .HasDatabaseName("row_idx");
+
+                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("RowId"));
+
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("Clubhouse.Data.Entities.Role", b =>
@@ -178,6 +272,12 @@ namespace Clubhouse.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("RowId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RowId"));
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -190,6 +290,14 @@ namespace Clubhouse.Data.Migrations
 
                     b.HasKey("Id");
 
+                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("Id"), false);
+
+                    b.HasIndex("RowId")
+                        .IsUnique()
+                        .HasDatabaseName("row_idx");
+
+                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("RowId"));
+
                     b.ToTable("Roles");
                 });
 
@@ -197,6 +305,9 @@ namespace Clubhouse.Data.Migrations
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("BillId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -223,7 +334,13 @@ namespace Clubhouse.Data.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("RowId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RowId"));
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -240,6 +357,17 @@ namespace Clubhouse.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("Id"), false);
+
+                    b.HasIndex("PhoneNumber")
+                        .HasDatabaseName("user_phone_idx");
+
+                    b.HasIndex("RowId")
+                        .IsUnique()
+                        .HasDatabaseName("row_idx");
+
+                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("RowId"));
 
                     b.ToTable("Users");
                 });
@@ -262,8 +390,8 @@ namespace Clubhouse.Data.Migrations
             modelBuilder.Entity("Clubhouse.Data.Entities.Bill", b =>
                 {
                     b.HasOne("Clubhouse.Data.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithOne("Bill")
+                        .HasForeignKey("Clubhouse.Data.Entities.Bill", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -289,6 +417,15 @@ namespace Clubhouse.Data.Migrations
                     b.Navigation("Item");
                 });
 
+            modelBuilder.Entity("Clubhouse.Data.Entities.Payment", b =>
+                {
+                    b.HasOne("Clubhouse.Data.Entities.Bill", "Bill")
+                        .WithMany("Payments")
+                        .HasForeignKey("BillId");
+
+                    b.Navigation("Bill");
+                });
+
             modelBuilder.Entity("RoleUser", b =>
                 {
                     b.HasOne("Clubhouse.Data.Entities.Role", null)
@@ -307,11 +444,18 @@ namespace Clubhouse.Data.Migrations
             modelBuilder.Entity("Clubhouse.Data.Entities.Bill", b =>
                 {
                     b.Navigation("BillEntries");
+
+                    b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("Clubhouse.Data.Entities.Item", b =>
                 {
                     b.Navigation("BillEntries");
+                });
+
+            modelBuilder.Entity("Clubhouse.Data.Entities.User", b =>
+                {
+                    b.Navigation("Bill");
                 });
 #pragma warning restore 612, 618
         }

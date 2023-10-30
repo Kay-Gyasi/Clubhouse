@@ -1,5 +1,4 @@
-﻿using Akka.Util;
-using Clubhouse.Business.Authentication;
+﻿using Clubhouse.Business.Authentication;
 using Clubhouse.Business.Contracts.Requests;
 using Clubhouse.Business.Contracts.Responses;
 using Clubhouse.Business.Models;
@@ -8,7 +7,6 @@ using Clubhouse.Data;
 using Clubhouse.Data.Entities;
 using Clubhouse.Data.Repositories.Interfaces;
 using Clubhouse.Shared.Contracts;
-using Mapster;
 using Microsoft.Extensions.Logging;
 
 namespace Clubhouse.Business.Services.Providers;
@@ -41,9 +39,16 @@ public class UserService : IUserService
         }
 
         var authToken = await Task.Run(() => _jwtService.GetToken(user));
+        if (authToken is null)
+        {
+            _logger.LogDebug("Auth token returned was null");
+            return ApiResponse<LoginResponse>.Default.ToServerErrorApiResponse();
+        }
+
         return (new LoginResponse(authToken)).ToOkApiResponse();
     }
 
+    // manager, back-officer
     public async Task<IApiResponse<bool>> CreateMemberAsync(CreateMemberRequest request,
         CancellationToken ct = default)
     {
@@ -86,10 +91,16 @@ public class UserService : IUserService
 
         user.AddToRoles(new Role[]{role, memberRole});
 
-        var (passwordHash, passwordKey) = 
+        var password = 
             await Task.Run(() => _userRepository.CreatePassword(request.Password), ct);
-        user.Password = passwordHash;
-        user.PasswordKey = passwordKey;
+        if (password is null)
+        {
+            _logger.LogDebug("Password returned was null");
+            return ApiResponse<bool>.Default.ToServerErrorApiResponse();
+        }
+
+        user.Password = password.Value.PasswordHash;
+        user.PasswordKey = password.Value.PasswordKey;
 
         var saved = await _userRepository.AddAsync(user, ct: ct);
         if (!saved)
@@ -99,5 +110,47 @@ public class UserService : IUserService
         }
 
         return true.ToCreatedApiResponse();
+    }
+
+    // manager, back-officer
+    public async Task<IApiResponse<bool>> UpdateMemberAsync(UpdateMemberRequest request, 
+        CancellationToken ct = default)
+    {
+        var user = await _userRepository.GetAsync(request.Id, ct);
+        if (user is null)
+        {
+            _logger.LogDebug("user does not exist");
+            return false.ToNotFoundApiResponse();
+        }
+
+        user.Username = request.Username;
+        user.Email = request.Email;
+        user.PhoneNumber = request.PhoneNumber;
+        // roles
+
+        var saved = await _userRepository.UpdateAsync(user, ct: ct);
+        if (!saved)
+        {
+            _logger.LogDebug("failed to update member. {UpdateMemberRequest}", request);
+            return false.ToNotFoundApiResponse();
+        }
+
+        return true.ToOkApiResponse();
+    }
+
+    // manager, back-officer
+    public async Task<IApiResponse<bool>> DeleteMemberAsync(string memberId)
+    {
+        var userExists = await _userRepository.ExistsAsync(x => x.Id == memberId);
+        if (userExists)
+        {
+            _logger.LogDebug("user already exists. {MemberId}", memberId);
+            return ApiResponse<bool>.Default.ToBadRequestApiResponse();
+        }
+
+        var deleted = await _userRepository.SoftDeleteAndSaveChangesAsync(memberId);
+        if (!deleted) return ApiResponse<bool>.Default.ToFailedDependencyApiResponse();
+
+        return true.ToOkApiResponse();
     }
 }

@@ -10,7 +10,16 @@ public class EntityConfiguration<T> : IEntityTypeConfiguration<T>
 {
     public virtual void Configure(EntityTypeBuilder<T> builder)
     {
-        builder.HasKey(o => o.Id);
+        builder.HasKey(o => o.Id)
+            .IsClustered(false);
+
+        builder.Property(x => x.RowId)
+            .UseIdentityColumn(1, 1);
+
+        builder.HasIndex(x => x.RowId)
+            .HasDatabaseName("row_idx")
+            .IsClustered()
+            .IsUnique();
 
         builder.HasQueryFilter(c => !c.IsDeleted);
 

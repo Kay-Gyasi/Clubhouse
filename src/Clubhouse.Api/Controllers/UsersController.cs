@@ -12,11 +12,11 @@ namespace Clubhouse.Api.Controllers;
 [Route("api/v{version:apiVersion}/[controller]")]
 [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiResponse<object>))]
 //[Authorize(AuthenticationSchemes = $"{AuthScheme.Bearer}")]
-public class UserController : AppControllerBase
+public class UsersController : AppControllerBase
 {
     private readonly IUserService _userService;
 
-    public UserController(IUserService userService)
+    public UsersController(IUserService userService)
     {
         _userService = userService;
     }

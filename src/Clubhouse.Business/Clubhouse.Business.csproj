@@ -9,6 +9,7 @@
 	<ItemGroup>
 		<PackageReference Include="Akka" Version="1.5.13" />
 		<PackageReference Include="Akka.DependencyInjection" Version="1.5.13" />
+		<PackageReference Include="Bogus" Version="34.0.2" />
 		<PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.13" />
 	</ItemGroup>
